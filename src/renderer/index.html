@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self' https:; font-src 'self' https://fonts.gstatic.com data:;" />
+  <title>KingNation Launcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body class="auth-loading auth-locked">
+  <div class="bg-layer"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Minecraft scene layers (parallax) -->
+  <div class="bg-clouds" id="bg-clouds">
+    <span class="cloud cloud-1"></span>
+    <span class="cloud cloud-2"></span>
+    <span class="cloud cloud-3"></span>
+    <span class="cloud cloud-4"></span>
+    <span class="cloud cloud-5"></span>
+  </div>
+  <div class="bg-mountains" id="bg-mountains" aria-hidden="true">
+    <svg viewBox="0 0 1600 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Couche montagne lointaine -->
+      <path d="M0 400 L0 280 L80 240 L160 260 L220 220 L300 250 L360 200 L440 230 L520 190 L620 240 L700 200 L780 230 L880 180 L960 220 L1040 200 L1120 240 L1200 210 L1280 250 L1360 220 L1440 240 L1520 200 L1600 240 L1600 400 Z" fill="#1a0d12" opacity=".85"/>
+      <!-- Couche montagne proche, plus haute -->
+      <path d="M0 400 L0 320 L60 290 L140 310 L200 270 L280 300 L340 260 L420 290 L500 250 L580 280 L660 240 L740 290 L820 250 L900 300 L980 270 L1060 310 L1140 280 L1220 300 L1300 270 L1380 310 L1460 280 L1540 310 L1600 290 L1600 400 Z" fill="#0d0608"/>
+    </svg>
+  </div>
+
+  <header class="titlebar">
+    <div class="titlebar-drag">
+      <div class="brand">
+        <img class="brand-logo" src="../assets/logo.png" alt="KingNation" />
+        <div class="brand-text">
+          <span class="brand-name">KING<span class="brand-accent">NATION</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="titlebar-controls">
+      <button class="tb-btn" id="btn-min" aria-label="Réduire">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect x="2" y="5.5" width="8" height="1" fill="currentColor"/></svg>
+      </button>
+      <button class="tb-btn" id="btn-max" aria-label="Agrandir">
+        <svg width="12" height="12" viewBox="0 0 12 12"><rect x="2.5" y="2.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      </button>
+      <button class="tb-btn tb-close" id="btn-close" aria-label="Fermer">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 2 L10 10 M10 2 L2 10" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="auth-screen" id="auth-screen" aria-live="polite">
+    <div class="auth-panel glass">
+      <img class="auth-logo" src="../assets/logo.png" alt="KingNation" />
+      <div class="auth-kicker">KINGNATION LAUNCHER</div>
+      <h1 class="auth-title">Connexion requise</h1>
+      <p class="auth-sub">Connectez-vous avec votre compte Microsoft pour accéder au launcher.</p>
+      <button class="btn btn-primary auth-login-btn" id="btn-auth-login">
+        Se connecter avec Microsoft
+      </button>
+      <div class="auth-status" id="auth-status">Vérification de la session...</div>
+    </div>
+  </section>
+
+  <main class="app" aria-hidden="true">
+    <aside class="sidebar glass">
+      <nav class="nav">
+        <button class="nav-item active" data-page="home">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 11l9-8 9 8"/>
+            <path d="M5 10v10h14V10"/>
+            <path d="M10 20v-6h4v6"/>
+          </svg>
+          <span>Accueil</span>
+        </button>
+        <button class="nav-item" data-page="news">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2z"/>
+            <path d="M12 11h5"/>
+            <path d="M12 15h5"/>
+            <path d="M7 8h10"/>
+            <path d="M7 12h2"/>
+            <path d="M7 16h2"/>
+          </svg>
+          <span>Actualités</span>
+        </button>
+        <button class="nav-item" data-page="resources">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+          <span>Ressources</span>
+        </button>
+        <button class="nav-item" data-page="settings">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
+          </svg>
+          <span>Paramètres</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="discord-button glass-inner" id="btn-discord" title="Discord KingNation" aria-label="Ouvrir le Discord KingNation">
+          <svg class="discord-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M20.32 4.37A19.8 19.8 0 0 0 15.36 2.8a13.6 13.6 0 0 0-.64 1.32 18.4 18.4 0 0 0-5.44 0 13.6 13.6 0 0 0-.64-1.32 19.7 19.7 0 0 0-4.96 1.57C.54 9.02-.32 13.56.1 18.04a19.9 19.9 0 0 0 6.08 3.08c.48-.66.92-1.36 1.3-2.1-.72-.27-1.4-.6-2.04-.98.17-.12.34-.25.5-.38a14.2 14.2 0 0 0 12.12 0c.16.13.33.26.5.38-.64.38-1.32.71-2.04.98.38.74.82 1.44 1.3 2.1a19.9 19.9 0 0 0 6.08-3.08c.5-5.2-.86-9.7-3.58-13.67ZM8.02 15.3c-1.18 0-2.14-1.08-2.14-2.4s.94-2.4 2.14-2.4c1.2 0 2.16 1.08 2.14 2.4 0 1.32-.94 2.4-2.14 2.4Zm7.96 0c-1.18 0-2.14-1.08-2.14-2.4s.94-2.4 2.14-2.4c1.2 0 2.16 1.08 2.14 2.4 0 1.32-.94 2.4-2.14 2.4Z"/>
+          </svg>
+          <span>Discord</span>
+        </button>
+
+        <div class="profile-card glass-inner" id="profile-card">
+          <div class="profile-empty" id="profile-empty">
+            <button class="btn btn-primary btn-block" id="btn-login">Se connecter</button>
+          </div>
+          <div class="profile-loaded hidden" id="profile-loaded">
+            <img class="profile-avatar" id="profile-avatar" alt="" />
+            <div class="profile-meta">
+              <div class="profile-name" id="profile-name">—</div>
+              <div class="profile-type">Microsoft</div>
+            </div>
+            <button class="icon-btn" id="btn-logout" title="Déconnexion">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 17v-3H9v-4h7V7l5 5zM4 4h7v2H4v12h7v2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2z"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <section class="content is-home">
+      <!-- HOME -->
+      <div class="page active" data-page="home">
+        <div class="hero">
+          <img class="hero-emblem" src="../assets/logo.png" alt="" aria-hidden="true" />
+          <div class="hero-particles" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="hero-content">
+            <h1 class="hero-title">Bienvenue sur <span class="accent">KingNation</span></h1>
+            <p class="hero-sub">Nations, alliances et stratégie vous attendent.</p>
+
+            <div class="hero-stats">
+              <div class="stat glass-inner">
+                <div class="stat-value" id="stat-players">—</div>
+                <div class="stat-label">Joueurs en ligne</div>
+              </div>
+              <div class="stat glass-inner">
+                <div class="stat-value" id="stat-slots">—</div>
+                <div class="stat-label">Slots totaux</div>
+              </div>
+              <div class="stat glass-inner">
+                <div class="stat-value stat-value--text" id="stat-status">—</div>
+                <div class="stat-label">État serveur</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="launch-panel glass">
+          <div class="launch-info">
+            <div class="launch-status" id="launch-status">Prêt à jouer</div>
+            <div class="launch-sub" id="launch-sub">Cliquez sur JOUER pour lancer le jeu</div>
+            <div class="progress-wrapper hidden" id="progress-wrapper">
+              <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+              <div class="progress-label" id="progress-label">0%</div>
+            </div>
+          </div>
+
+          <div class="launch-meta">
+            <div class="launch-meta-item">
+              <span class="launch-meta-label">Mode</span>
+              <span class="launch-meta-value" id="launch-meta-version">—</span>
+            </div>
+            <div class="launch-meta-item">
+              <span class="launch-meta-label">RAM allouée</span>
+              <span class="launch-meta-value" id="launch-meta-ram">—</span>
+            </div>
+            <div class="launch-meta-item">
+              <span class="launch-meta-label">Dernière session</span>
+              <span class="launch-meta-value" id="launch-meta-last">Jamais</span>
+            </div>
+          </div>
+
+          <div class="launch-cta">
+            <button class="btn-play" id="btn-play" disabled>
+              <span class="btn-play-label">JOUER</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEWS -->
+      <div class="page" data-page="news">
+        <h2 class="page-title">Fil d'actualités</h2>
+        <div class="news-container" id="news-container">
+          <div class="news-loading">Chargement des actualités...</div>
+        </div>
+      </div>
+
+      <!-- RESOURCES -->
+      <div class="page" data-page="resources">
+        <div class="resources-header">
+          <h2 class="page-title">Gestionnaire de Ressources</h2>
+          <div class="resources-nav">
+            <button class="res-nav-btn active" data-res-tab="textures">Textures</button>
+            <button class="res-nav-btn" data-res-tab="shaders">Shaders</button>
+            <button class="res-nav-btn" data-res-tab="schematics">Schematics</button>
+          </div>
+        </div>
+
+        <!-- Textures Tab -->
+        <div class="res-tab-content active" id="tab-textures">
+          <div class="resources-panel-grid">
+            <div class="resources-main glass">
+              <div class="search-row">
+                <input type="text" id="search-textures-input" placeholder="Rechercher des packs sur Modrinth (1.21.1)..." />
+                <select id="filter-textures-sort" class="res-filter-select">
+                  <option value="downloads">Populaires</option>
+                  <option value="relevance">Pertinence</option>
+                  <option value="follows">Plus suivis</option>
+                  <option value="newest">Récents</option>
+                  <option value="updated">Mis à jour</option>
+                </select>
+                <button class="btn btn-primary" id="btn-search-textures">Rechercher</button>
+              </div>
+              <div class="resources-list" id="search-textures-results">
+                <div class="res-empty-msg">Entrez une recherche pour trouver des packs sur Modrinth.</div>
+              </div>
+            </div>
+            <div class="resources-side">
+              <div class="resources-side-card glass">
+                <div class="side-card-header">
+                  <h3>Packs Installés</h3>
+                  <button class="btn btn-ghost btn-compact" id="btn-open-dir-textures">Ouvrir dossier</button>
+                </div>
+                <div class="installed-list" id="installed-textures-list">
+                  <div class="res-empty-msg">Chargement...</div>
+                </div>
+              </div>
+              <div class="resources-side-card glass">
+                <div class="side-card-header">
+                  <h3>Recommandé</h3>
+                </div>
+                <div class="recommended-list" id="recommended-textures-list">
+                  <div class="res-empty-msg">Aucun pack recommandé par le serveur.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shaders Tab -->
+        <div class="res-tab-content" id="tab-shaders">
+          <div class="resources-panel-grid">
+            <div class="resources-main glass">
+              <div class="search-row">
+                <input type="text" id="search-shaders-input" placeholder="Rechercher des shaders sur Modrinth..." />
+                <select id="filter-shaders-sort" class="res-filter-select">
+                  <option value="downloads">Populaires</option>
+                  <option value="relevance">Pertinence</option>
+                  <option value="follows">Plus suivis</option>
+                  <option value="newest">Récents</option>
+                  <option value="updated">Mis à jour</option>
+                </select>
+                <button class="btn btn-primary" id="btn-search-shaders">Rechercher</button>
+              </div>
+              <div class="resources-list" id="search-shaders-results">
+                <div class="res-empty-msg">Entrez une recherche pour trouver des shaders sur Modrinth.</div>
+              </div>
+            </div>
+            <div class="resources-side">
+              <div class="resources-side-card glass">
+                <div class="side-card-header">
+                  <h3>Shaders Installés</h3>
+                  <button class="btn btn-ghost btn-compact" id="btn-open-dir-shaders">Ouvrir dossier</button>
+                </div>
+                <div class="installed-list" id="installed-shaders-list">
+                  <div class="res-empty-msg">Chargement...</div>
+                </div>
+              </div>
+              <div class="resources-side-card glass">
+                <div class="side-card-header">
+                  <h3>Recommandé</h3>
+                </div>
+                <div class="recommended-list" id="recommended-shaders-list">
+                  <div class="res-empty-msg">Aucun shader recommandé.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schematics Tab -->
+        <div class="res-tab-content" id="tab-schematics">
+          <div class="resources-panel-grid">
+            <div class="resources-main glass">
+              <div class="schematics-guide">
+                <h3>Utilisation des Schematics (.litematic / .schem)</h3>
+                <p>Le serveur autorise le mod <strong>Litematica</strong> pour vous aider à construire vos structures. Placez vos fichiers de plans directement dans le dossier pour les projeter en jeu.</p>
+                <div class="litematica-toggle-card">
+                  <label class="litematica-checkbox-label">
+                    <input type="checkbox" id="toggle-litematica" />
+                    <span>Activer le mod <strong>Litematica</strong> (NeoForge 1.21.1)</span>
+                  </label>
+                  <p class="litematica-help-text">Si activé, le launcher installera automatiquement Litematica (Forgematica) et MaFgLib dans votre jeu. Décochez pour les retirer.</p>
+                </div>
+                <div class="guide-actions">
+                  <button class="btn btn-primary" id="btn-open-dir-schematics">Ouvrir le dossier Schematics</button>
+                </div>
+              </div>
+              <div class="resources-side-card glass style-main-schematics">
+                <div class="side-card-header">
+                  <h3>Plans recommandés par le serveur</h3>
+                </div>
+                <div class="recommended-list" id="recommended-schematics-list">
+                  <div class="res-empty-msg">Aucun plan disponible pour le moment.</div>
+                </div>
+              </div>
+            </div>
+            <div class="resources-side">
+              <div class="resources-side-card glass">
+                <div class="side-card-header">
+                  <h3>Fichiers Installés</h3>
+                </div>
+                <div class="installed-list" id="installed-schematics-list">
+                  <div class="res-empty-msg">Chargement...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" data-page="settings">
+        <h2 class="page-title">Paramètres</h2>
+        <div class="settings-grid">
+          <div class="setting-card glass setting-wide">
+            <div class="setting-header">
+              <span class="setting-label">Performance</span>
+              <span class="setting-value-pill"><span id="setting-ram-value">4</span> Go</span>
+            </div>
+            <h3 class="setting-title">Mémoire allouée</h3>
+            <div class="slider-row">
+              <input type="range" min="2" max="16" step="1" id="setting-ram" value="4" />
+            </div>
+            <div class="ram-ticks" id="ram-ticks"></div>
+
+            <div class="ram-info">
+              <span class="ram-info-item">
+                <span class="ram-info-label">Détectée</span>
+                <span class="ram-info-value" id="ram-total">— Go</span>
+              </span>
+              <span class="ram-info-item">
+                <span class="ram-info-label">Recommandée</span>
+                <span class="ram-info-value" id="ram-recommended">— Go</span>
+              </span>
+              <button class="ram-quick" id="ram-quick-rec" title="Utiliser la valeur recommandée">Recommandée</button>
+              <button class="ram-quick" id="ram-quick-max" title="Utiliser le maximum disponible">Max</button>
+            </div>
+
+            <p class="setting-help">La quantité de mémoire vive allouée à Minecraft. Plus le modpack est lourd, plus il faut de RAM. 4–8 Go conviennent à la plupart des modpacks. Le maximum laisse 2 Go pour le système.</p>
+          </div>
+
+          <div class="setting-card glass setting-wide maintenance-card">
+            <div class="setting-header">
+              <span class="setting-label">Maintenance</span>
+              <span class="setting-value-pill" id="maintenance-pill">Prêt</span>
+            </div>
+
+            <div class="maintenance-status" id="maintenance-status">
+              <strong>Installation contrôlée</strong>
+              <span>Le launcher peut réparer Java, NeoForge, le contenu et les fichiers KingNation automatiquement.</span>
+            </div>
+
+            <div class="maintenance-actions">
+              <button class="btn btn-primary" id="btn-repair-game">Réparer le jeu</button>
+              <button class="btn btn-ghost" id="btn-reinstall-mods" title="Force le re-téléchargement complet du contenu">Réinstaller le contenu</button>
+              <button class="btn btn-ghost" id="btn-copy-diagnostic">Copier diagnostic</button>
+              <button class="btn btn-ghost" id="btn-open-folder">Dossier</button>
+              <button class="btn btn-ghost" id="btn-open-logs">Logs</button>
+              <button class="btn btn-ghost" id="btn-open-crash">Crashes</button>
+              <button class="btn btn-ghost" id="btn-help-discord">Aide Discord</button>
+            </div>
+
+            <div class="setting-meta">
+              <span>KingNation Launcher <strong id="app-version-2">v—</strong></span>
+            </div>
+          </div>
+
+          <div class="setting-card glass">
+            <div class="setting-header">
+              <span class="setting-label">Audio launcher</span>
+              <span class="setting-value-pill"><span id="setting-sfx-value">45</span>%</span>
+            </div>
+            <h3 class="setting-title">Effets sonores</h3>
+            <div class="slider-row">
+              <input type="range" min="0" max="100" step="1" id="setting-sfx" value="45" />
+            </div>
+
+            <div class="sfx-controls">
+              <label class="sfx-mute">
+                <input type="checkbox" id="setting-sfx-mute" />
+                <span>Couper le son</span>
+              </label>
+              <button class="btn btn-ghost btn-compact" id="btn-sfx-test" data-sfx="none">Aperçu</button>
+            </div>
+
+            <p class="setting-help">Sons d'interface synthétisés (clics, succès, lancement). N'affecte pas le son du jeu.</p>
+          </div>
+
+          <div class="setting-card glass">
+            <div class="setting-header">
+              <span class="setting-label">Ambiance launcher</span>
+              <span class="setting-value-pill"><span id="setting-music-value">50</span>%</span>
+            </div>
+            <h3 class="setting-title">Musique d'ambiance</h3>
+            <div class="slider-row">
+              <input type="range" min="0" max="100" step="1" id="setting-music" value="50" />
+            </div>
+
+            <div class="sfx-controls">
+              <label class="sfx-mute">
+                <input type="checkbox" id="setting-music-mute" />
+                <span>Couper la musique</span>
+              </label>
+            </div>
+
+            <p class="setting-help">Joue une musique d'ambiance immersive. Se coupe automatiquement lorsque le jeu est lancé.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- TERMS AND CONDITIONS MODAL -->
+  <div class="terms-backdrop hidden" id="terms-backdrop">
+    <div class="terms-container">
+      <div class="terms-header">
+        <h2 class="terms-title">Charte d'utilisation</h2>
+        <div class="terms-subtitle">KingNation &bull; Atlas Interactive</div>
+      </div>
+      <div class="terms-body">
+        <h4>1. Acceptation des conditions</h4>
+        <p>En accédant au serveur KingNation et en utilisant ce launcher, vous acceptez de vous conformer aux présentes règles d'utilisation et à notre règlement intérieur. Ce service est proposé et exploité par le studio <strong>Atlas Interactive</strong>.</p>
+        
+        <h4>2. Règles de conduite</h4>
+        <p>Pour assurer une expérience de jeu saine pour tous les joueurs, vous vous engagez à :</p>
+        <ul>
+          <li>Respecter les autres membres de la communauté (pas d'insultes, de menaces, ou de harcèlement).</li>
+          <li>Ne pas tricher, utiliser de mods interdits, de clients alternatifs modifiés, ou exploiter des failles du jeu (bugs).</li>
+          <li>Respecter le travail des modérateurs et des administrateurs d'Atlas Interactive.</li>
+        </ul>
+
+        <h4>3. Sécurité et Propriété</h4>
+        <p>L'utilisation de systèmes de contournement du launcher officiel pour se connecter au serveur est formellement interdite et entraînera un bannissement permanent de votre compte Minecraft du serveur KingNation.</p>
+        <p>Le contenu proposé sur KingNation reste la propriété exclusive d'Atlas Interactive. Toute tentative de rétro-ingénierie ou de vol de ressources est passible de poursuites.</p>
+
+        <h4>4. Données personnelles</h4>
+        <p>Le launcher ne collecte aucune information confidentielle ou mot de passe. L'authentification s'effectue de manière sécurisée directement via les services officiels de Microsoft.</p>
+      </div>
+      <div class="terms-actions">
+        <button class="btn btn-ghost" id="btn-terms-decline">Refuser</button>
+        <button class="btn btn-primary" id="btn-terms-accept">Accepter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/sounds.js"></script>
+  <script src="js/renderer.js"></script>
+</body>
+</html>

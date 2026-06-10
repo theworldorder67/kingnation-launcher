@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>KingNation Launcher</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --red: #ff1f3d;
+      --red-glow: rgba(255, 31, 61, 0.4);
+      --glass: rgba(255, 255, 255, 0.02);
+      --glass-border: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Container */
+    .splash-card {
+      width: 480px;
+      height: 330px;
+      background: linear-gradient(135deg, rgba(20, 5, 8, 0.6) 0%, rgba(5, 5, 5, 0.9) 100%);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(255, 31, 61, 0.05);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      overflow: hidden;
+    }
+
+    /* Ambient background embers */
+    .ember {
+      position: absolute;
+      bottom: -10px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 6px var(--red);
+      opacity: 0.8;
+      animation: floatUp 6s infinite ease-in;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.6;
+      }
+      80% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-360px) translateX(var(--x-offset, 20px)) scale(0.3);
+        opacity: 0;
+      }
+    }
+
+    /* Pulsing Emblem */
+    .logo-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 30px;
+    }
+
+    .emblem {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(255, 31, 61, 0.3));
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 15px rgba(255, 31, 61, 0.3));
+      }
+      50% {
+        transform: scale(1.06);
+        filter: drop-shadow(0 0 25px rgba(255, 31, 61, 0.55));
+      }
+    }
+
+    /* Text & Status */
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #ffffff 0%, #ffcbd1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 25px;
+      font-weight: 500;
+      text-align: center;
+      transition: color 0.2s;
+    }
+
+    /* Progress bar */
+    .progress-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: var(--red);
+      box-shadow: 0 0 10px var(--red);
+      border-radius: 2px;
+      transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-card">
+    <!-- Pulsing Logo -->
+    <div class="logo-wrapper">
+      <img src="../assets/logo.png" class="emblem" alt="KingNation Emblem">
+    </div>
+
+    <!-- Info text -->
+    <div class="title">KingNation</div>
+    <div class="status" id="status">Vérification des mises à jour...</div>
+
+    <!-- Progress bar -->
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
+
+  <script>
+    // Create random background particles (embers)
+    const card = document.querySelector('.splash-card');
+    const particleCount = 15;
+    for (let i = 0; i < particleCount; i++) {
+      const ember = document.createElement('div');
+      ember.className = 'ember';
+      ember.style.left = `${Math.random() * 90 + 5}%`;
+      ember.style.animationDelay = `${Math.random() * 6}s`;
+      ember.style.setProperty('--x-offset', `${Math.random() * 60 - 30}px`);
+      card.appendChild(ember);
+    }
+
+    // Set up IPC listener for updater events
+    const statusText = document.getElementById('status');
+    const progressBar = document.getElementById('progress-bar');
+
+    window.api?.updater?.onProgress((data) => {
+      if (data.status) {
+        statusText.textContent = data.status;
+      }
+      if (typeof data.percent === 'number') {
+        progressBar.style.width = `${data.percent}%`;
+        if (data.percent > 0) {
+          statusText.textContent = `${data.status} — ${Math.round(data.percent)}%`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

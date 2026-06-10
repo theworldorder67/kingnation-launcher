@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[3,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="kingnationmenu"
+version="1.0.0"
+displayName="KingNation Menu"
+authors="KingNation"
+description='''
+Custom client main menu for KingNation.
+'''
+
+[[dependencies.kingnationmenu]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.21.2)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.kingnationmenu]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.95,)"
+ordering="NONE"
+side="CLIENT"
