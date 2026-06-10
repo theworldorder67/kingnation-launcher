@@ -2,7 +2,7 @@
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
-const DEFAULT_DISCORD_URL = 'https://discord.gg/aPf2v9MduU';
+const DEFAULT_DISCORD_URL = 'https://discord.gg/Y8NMcpNzsm';
 
 const state = {
   profile: null,
