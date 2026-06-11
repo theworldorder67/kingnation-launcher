@@ -23,7 +23,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "AKINDOT",
+        "owner": "theworldorder67",
         "repo": "kingnation-launcher",
         "releaseType": "release"
       }
