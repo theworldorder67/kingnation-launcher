@@ -2555,4 +2555,18 @@ body::before {
   }
 }
 
+/* Watermark version */
+.version-watermark {
+  position: fixed;
+  bottom: 10px;
+  right: 14px;
+  font-size: 10px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.12); /* very faint, barely visible */
+  pointer-events: none;
+  user-select: none;
+  z-index: 9999;
+  letter-spacing: 0.5px;
+}
+
 
