@@ -1,7 +1,6 @@
 const { Client } = require('@xhayper/discord-rpc');
 
-// Client ID for KingNation application on Discord
-const CLIENT_ID = '1511801086090936380';
+const CLIENT_ID = '1516181575270793256';
 let rpc = null;
 let isReady = false;
 let currentActivity = null;
@@ -44,7 +43,7 @@ function setActivity(activity) {
   const rpcData = {
     details: activity.details,
     state: activity.state,
-    largeImageKey: activity.largeImageKey || 'logo',
+    largeImageKey: activity.largeImageKey || 'logo_kin',
     largeImageText: activity.largeImageText || 'KingNation',
     instance: false,
     buttons: [
@@ -70,7 +69,7 @@ function showLauncherActivity() {
   setActivity({
     details: 'Dans le Launcher',
     state: 'Prêt à jouer',
-    largeImageKey: 'logo',
+    largeImageKey: 'logo_kin',
     largeImageText: 'KingNation Launcher'
   });
 }
@@ -80,9 +79,9 @@ function showGameActivity(playerName) {
     details: 'En jeu',
     state: 'Sur le serveur KingNation',
     startTimestamp: Date.now(),
-    largeImageKey: 'logo',
+    largeImageKey: 'logo_kin',
     largeImageText: 'KingNation Server',
-    smallImageKey: 'logo',
+    smallImageKey: 'logo_kin',
     smallImageText: `Joueur : ${playerName}`
   });
 }
