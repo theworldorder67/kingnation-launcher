@@ -19,7 +19,7 @@
     "electronVersion": "32.2.0",
     "appId": "com.kingnation.launcher",
     "productName": "KingNation Launcher",
-    "artifactName": "kingnation_installer.${ext}",
+    "artifactName": "kingnation_installer_ak.${ext}",
     "publish": [
       {
         "provider": "github",
