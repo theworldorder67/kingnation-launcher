@@ -2615,4 +2615,20 @@ body::before {
   letter-spacing: 0.5px;
 }
 
+/* Beta tag badge */
+.badge-beta {
+  display: inline-block;
+  background-color: #ffb020; /* matching the yellow/gold from the slots/players count */
+  color: #050507; /* dark text for readability */
+  font-family: 'Pixelify Sans', 'Segoe UI', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  box-shadow: 0 0 12px rgba(255, 176, 32, 0.45);
+}
+
 
