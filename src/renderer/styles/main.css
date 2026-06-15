@@ -893,7 +893,7 @@ body.auth-locked .app {
 /* Launch meta row above the JOUER button */
 .launch-meta {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 14px;
   width: 100%;
   max-width: 540px;
