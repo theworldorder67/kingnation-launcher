@@ -2058,6 +2058,7 @@ body::before {
   font-size: 12px;
   color: var(--text-dim);
   line-height: 1.45;
+  white-space: pre-wrap;
 }
 
 /* === Terms and Rules Modal === */
